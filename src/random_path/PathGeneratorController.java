@@ -9,9 +9,9 @@ import java.awt.*;
 public class PathGeneratorController {
     private PathModel model;
     private RandomPathView view;
-    private JFrame window;
+    //private JFrame window;
 
-    public PathGeneratorController() {
+    /*public PathGeneratorController() {
         window = new JFrame("CAMINO ALEATORIO");
         window.setLayout(new FlowLayout());
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,5 +24,12 @@ public class PathGeneratorController {
         window.pack();
 
         window.setVisible(true);
+    }*/
+
+    public PathGeneratorController() {
+        model = new PathModel();
+        view = new RandomPathView(model, 1500, 1000);
+        
+        view.setVisible(true);
     }
 }

@@ -13,18 +13,19 @@ class RandomPathPanel extends JPanel {
     private static final int ZERO = 0;
 
     private PathModel generatedPath;
-    private int nRows, nCols, saveWidth, saveHeight;
+    private int nRows, nCols, savedWidth, savedHeight;
 
     public RandomPathPanel(PathModel model, int width, int height) {
         super();
         setSize(width, height);
         setBackground(Color.WHITE);
+        setLayout(new FlowLayout());
 
-        this.saveHeight = height;
-        this.saveWidth = width;
         this.generatedPath = model;
         this.nRows = DEFAULT_DIMENSION;
         this.nCols = DEFAULT_DIMENSION;
+        this.savedHeight = height;
+        this.savedWidth = width;
         getGeneratedPath().setHeightDistance(getHeight() / nRows);
         getGeneratedPath().setSideDistance(getWidth() / nCols);
         getGeneratedPath().setOrigin(determineOrigin());
@@ -72,7 +73,7 @@ class RandomPathPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //setSize(saveWidth, saveHeight);
+        setSize(savedWidth, savedHeight);
         try {
             //drawGrid(g);
             //getGeneratedPath().drawPath(g, getWidth(), getHeight());
