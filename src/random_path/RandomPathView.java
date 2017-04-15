@@ -8,7 +8,9 @@ import java.awt.*;
  * @author Óscar Darias Plasencia
  * @since 15-4-2017
  */
-public class RandomPathView extends JPanel {
+public class RandomPathView extends JFrame {
+    private static final int CONTROL_PANEL_PROPORTION = 6;
+
     private RandomPathPanel pathPanel;
     private ButtonsPanel controls;
 
@@ -22,13 +24,16 @@ public class RandomPathView extends JPanel {
 
     public RandomPathView(PathModel model, int width, int height) {
         super();
-        setSize(width, height);
-        setLayout(new FlowLayout(FlowLayout.LEADING));
 
-        controls = new ButtonsPanel(getWidth() / 6, getHeight());
+        setLayout(new FlowLayout());
+
+        controls = new ButtonsPanel(getWidth() / CONTROL_PANEL_PROPORTION, getHeight());
         pathPanel = new RandomPathPanel(model, getWidth() - controls.getWidth(), getHeight());
 
         add(pathPanel);
         add(controls);
+
+        pack();
+        System.out.println();
     }
 }

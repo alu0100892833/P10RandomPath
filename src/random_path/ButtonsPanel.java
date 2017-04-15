@@ -15,6 +15,12 @@ import java.awt.*;
  */
 class ButtonsPanel extends JPanel {
     private static final double BUTTON_PROPORTIONS = 1.7;
+    private static final int ELEMENT_LENGTH = 20;
+    private static final int N_ELEMENTS = 5;
+    private static final int COLS = 1;
+    private static final int GAP = 15;
+    private static final int TOP_BOTTOM_MARGIN_PROPORTION = 3;
+    private static final int SIDE_MARGIN_PROPORTION = 2;
 
     private JButton start, color, stop;
     private JTextField dimensions, timer;
@@ -26,8 +32,10 @@ class ButtonsPanel extends JPanel {
      */
     public ButtonsPanel(int width, int height) {
         super();
-        setLayout(new FlowLayout(FlowLayout.CENTER));
+        setLayout(new GridLayout(N_ELEMENTS, COLS, GAP, GAP));
         setSize(width, height);
+        setBorder(BorderFactory.createEmptyBorder(height / TOP_BOTTOM_MARGIN_PROPORTION, (width - ELEMENT_LENGTH) / SIDE_MARGIN_PROPORTION,
+                height / TOP_BOTTOM_MARGIN_PROPORTION, (width - ELEMENT_LENGTH) / SIDE_MARGIN_PROPORTION));
         addElements();
     }
 
@@ -43,10 +51,11 @@ class ButtonsPanel extends JPanel {
         timer = new JTextField("TIMER");
 
         // Establecer el tamaño de dichos elementos
-        start.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), start.getHeight()));
-        color.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), color.getHeight()));
-        stop.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), stop.getHeight()));
-        dimensions.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), dimensions.getHeight()));
+        start.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), ELEMENT_LENGTH));
+        color.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), ELEMENT_LENGTH));
+        stop.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), ELEMENT_LENGTH));
+        dimensions.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), ELEMENT_LENGTH));
+        timer.setPreferredSize(new Dimension((int) (getWidth() / BUTTON_PROPORTIONS), ELEMENT_LENGTH));
 
         // Añadir los elementos al panel
         add(start);

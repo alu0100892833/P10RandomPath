@@ -6,5 +6,6 @@ import random_path.PathGeneratorController;
 public class RandomPathProgram {
     public static void main(String[] args) {
         PathGeneratorController controller = new PathGeneratorController();
+        System.out.println();
     }
 }

@@ -13,15 +13,15 @@ public class PathGeneratorController {
 
     public PathGeneratorController() {
         window = new JFrame("CAMINO ALEATORIO");
-        window.setSize(1000, 600);
         window.setLayout(new FlowLayout());
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
 
         model = new PathModel();
-        view = new RandomPathView(model, window.getWidth(), window.getHeight());
+        view = new RandomPathView(model, 1500, 1000);
 
         window.add(view);
+        window.pack();
 
         window.setVisible(true);
     }
