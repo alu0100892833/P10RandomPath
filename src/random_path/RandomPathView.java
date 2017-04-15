@@ -4,43 +4,31 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Este panel permite mostrar tanto el tablero sobre el que se va generando el camino aleatorio como los controles para modificar los parámetros de éste.
+ * @author Óscar Darias Plasencia
+ * @since 15-4-2017
  */
-public class RandomPathView extends JFrame {
+public class RandomPathView extends JPanel {
+    private RandomPathPanel pathPanel;
+    private ButtonsPanel controls;
 
+    public RandomPathPanel getPathPanel() {
+        return pathPanel;
+    }
 
-    class ButtonsPanel extends JPanel {
-        private static final int BUTTON_PROPORTIONS = 2;
+    public ButtonsPanel getControls() {
+        return controls;
+    }
 
-        private JButton start, color, stop;
-        private JTextField dimensions;
+    public RandomPathView(PathModel model, int width, int height) {
+        super();
+        setSize(width, height);
+        setLayout(new FlowLayout(FlowLayout.LEADING));
 
-        public ButtonsPanel(int width, int height) {
-            super();
-            setSize(width, height);
-            addElements();
-            setListeners();
-        }
+        controls = new ButtonsPanel(getWidth() / 6, getHeight());
+        pathPanel = new RandomPathPanel(model, getWidth() - controls.getWidth(), getHeight());
 
-        private void addElements() {
-            start = new JButton("START");
-            color = new JButton("COLOR");
-            stop = new JButton("STOP");
-            dimensions = new JTextField("DENSITY");
-
-            start.setPreferredSize(new Dimension(getWidth() / BUTTON_PROPORTIONS, start.getHeight()));
-            color.setPreferredSize(new Dimension(getWidth() / BUTTON_PROPORTIONS, color.getHeight()));
-            stop.setPreferredSize(new Dimension(getWidth() / BUTTON_PROPORTIONS, stop.getHeight()));
-            dimensions.setPreferredSize(new Dimension(getWidth() / BUTTON_PROPORTIONS, dimensions.getHeight()));
-
-            add(start);
-            add(color);
-            add(stop);
-            add(dimensions);
-        }
-
-        private void setListeners() {
-
-        }
+        add(pathPanel);
+        add(controls);
     }
 }

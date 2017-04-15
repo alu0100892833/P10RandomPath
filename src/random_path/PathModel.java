@@ -24,12 +24,9 @@ public class PathModel {
     private Color linesColor;
     private double sideDistance, heightDistance;
 
-    public PathModel(Point center, double sideDistance, double heightDistance) {
-        this.origin = center;
+    public PathModel() {
         this.generatedPath = new ArrayList<>();
         this.linesColor = Color.BLACK;
-        this.sideDistance = sideDistance;
-        this.heightDistance = heightDistance;
     }
 
     public double getOriginX() {
