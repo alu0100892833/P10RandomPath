@@ -93,6 +93,10 @@ class RandomPathPanel extends JPanel {
         g.setColor(previousColor);
     }
     
+    /**
+     * Este método dibuja un pequeño círculo en el origen del eje de coordenadas. Señala el punto de inicio de la generación del camino aleatorio.
+     * @param g
+     */
     private void drawCenter(Graphics g) {
     	Point center = determineOrigin();
     	int radius = Math.min(getSideDisplacement(), getHeightDisplacement()) / 2;
