@@ -28,8 +28,6 @@ public class PathGeneratorController {
 
     public PathGeneratorController() {
         model = new PathModel();
-        view = new RandomPathView(model, 1500, 1000);
-        
-        view.setVisible(true);
+        view = new RandomPathView(model);
     }
 }

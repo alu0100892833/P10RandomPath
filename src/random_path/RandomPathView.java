@@ -1,10 +1,10 @@
 package random_path;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 public class RandomPathView extends JFrame {
-    private static final int CONTROL_PANEL_PROPORTION = 6;
 
     private RandomPathPanel pathPanel;
     private ButtonsPanel controls;
@@ -17,18 +17,23 @@ public class RandomPathView extends JFrame {
         return controls;
     }
 
-    public RandomPathView(PathModel model, int width, int height) {
-        super();
+    public RandomPathView(PathModel model) {
         setLayout(new BorderLayout());
-        setSize(width, height);
         setTitle("CAMINO ALEATORIO");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+                
+        pathPanel = new RandomPathPanel(model);
+        add(pathPanel, BorderLayout.CENTER);
         
-        controls = new ButtonsPanel(width / CONTROL_PANEL_PROPORTION, height);
-        pathPanel = new RandomPathPanel(model, width - controls.getWidth(), height);
-
-        add(pathPanel);
-        add(controls);
+        Dimension fullScreen = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(fullScreen);
+        
+        controls = new ButtonsPanel(getWidth(), getHeight());
+        add(controls, BorderLayout.EAST);
+        //System.out.println("Dimensiones ventana: " + getWidth() + "x" + getHeight());
+        //System.out.println("Dimensiones controles: " + controls.getWidth() + "x" + controls.getHeight());
+        
+        setVisible(true);
     }
 }

@@ -9,23 +9,19 @@ import java.awt.*;
  * @since 15-4-2017
  */
 class RandomPathPanel extends JPanel {
-    private static final int DEFAULT_DIMENSION = 100;
+    private static final int DEFAULT_DIMENSION = 10;
+    private static final int MAX_CENTER_RADIUS = 10;
     private static final int ZERO = 0;
 
     private PathModel generatedPath;
-    private int nRows, nCols, savedWidth, savedHeight;
+    private int nRows, nCols;
 
-    public RandomPathPanel(PathModel model, int width, int height) {
-        super();
-        setSize(width, height);
+    public RandomPathPanel(PathModel model) {
         setBackground(Color.WHITE);
-        setLayout(new FlowLayout());
-
+        
         this.generatedPath = model;
         this.nRows = DEFAULT_DIMENSION;
         this.nCols = DEFAULT_DIMENSION;
-        this.savedHeight = height;
-        this.savedWidth = width;
         getGeneratedPath().setHeightDistance(getHeight() / nRows);
         getGeneratedPath().setSideDistance(getWidth() / nCols);
         getGeneratedPath().setOrigin(determineOrigin());
@@ -73,10 +69,10 @@ class RandomPathPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setSize(savedWidth, savedHeight);
         try {
-            //drawGrid(g);
-            //getGeneratedPath().drawPath(g, getWidth(), getHeight());
+            drawGrid(g);
+            drawCenter(g);
+            getGeneratedPath().drawPath(g, getWidth(), getHeight());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -88,10 +84,21 @@ class RandomPathPanel extends JPanel {
      * @param g Objeto Graphics sobre el que se va a dibujar la cuadrícula.
      */
     private void drawGrid(Graphics g) {
+    	Color previousColor = g.getColor();
+    	g.setColor(Color.LIGHT_GRAY);
         for (int i = getHeightDisplacement(); i < getHeight(); i += getHeightDisplacement())
             g.drawLine(ZERO, i, getWidth(), i);
         for (int j = getSideDisplacement(); j < getWidth(); j += getSideDisplacement())
             g.drawLine(j, ZERO, j, getHeight());
-
+        g.setColor(previousColor);
+    }
+    
+    private void drawCenter(Graphics g) {
+    	Point center = determineOrigin();
+    	int radius = Math.min(getSideDisplacement(), getHeightDisplacement()) / 2;
+    	if (radius > MAX_CENTER_RADIUS)
+    		radius = MAX_CENTER_RADIUS;
+    	int diameter = radius * 2;
+    	g.fillOval((int) (center.getX() - radius), (int) (center.getY() - radius), diameter, diameter);
     }
 }
