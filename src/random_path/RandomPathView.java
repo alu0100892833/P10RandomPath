@@ -64,7 +64,6 @@ public class RandomPathView extends JFrame {
         add(controls, BorderLayout.EAST);
         
         setListeners();
-        //setVisible(true);
     }
 	
 	/**
