@@ -8,5 +8,12 @@ public class PathGeneratorController {
     public PathGeneratorController() {
         model = new PathModel();
         view = new RandomPathView(model);
+        view.setVisible(true);
+    }
+    
+    @SuppressWarnings("unused")
+	public static void main(String[] args) {
+        PathGeneratorController controller = new PathGeneratorController();
+        System.out.println();
     }
 }
