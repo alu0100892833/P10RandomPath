@@ -4,27 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- *
+ * Esta clase permite instanciar paneles sobre el que ir trazando un camino aleatorio. Establece unas dimensiones (cantidad de celdas) y dibuja la cuadrícula.
+ * Contiene un modelo del camino generado (generatedPath, objeto PathModel), que pinta en cada llamada a paintComponent.
  * @author Óscar Darias Plasencia
  * @since 15-4-2017
  */
 class RandomPathPanel extends JPanel {
-    private static final int DEFAULT_DIMENSION = 10;
+	private static final long serialVersionUID = 3214909588162411411L;
+	public static final int DEFAULT_DIMENSION = 100;
     private static final int MAX_CENTER_RADIUS = 10;
     private static final int ZERO = 0;
 
     private PathModel generatedPath;
     private int nRows, nCols;
 
+    /**
+     * Constructor con parámetros. Establece el fondo a blanco y las filas y columnas a un valor dado por una constante.
+     * @param model Objeto PathModel que se dibujará, modelo del camino aleatorio.
+     */
     public RandomPathPanel(PathModel model) {
         setBackground(Color.WHITE);
         
         this.generatedPath = model;
         this.nRows = DEFAULT_DIMENSION;
         this.nCols = DEFAULT_DIMENSION;
-        getGeneratedPath().setHeightDistance(getHeight() / nRows);
-        getGeneratedPath().setSideDistance(getWidth() / nCols);
-        getGeneratedPath().setOrigin(determineOrigin());
     }
 
     /**
@@ -37,10 +40,18 @@ class RandomPathPanel extends JPanel {
         this.nCols = nCols;
     }
 
+    /**
+     * Determina el desplazamiento lateral de cada celda en función de la anchura total y el número de columnas de la cuadrícula.
+     * @return Número de píxels de ancho que tiene cada celda.
+     */
     public int getSideDisplacement() {
         return getWidth() / nCols;
     }
 
+    /**
+     * Determina el desplazamiento vertical de cada celda en función de la anchura total y el número de filas de la cuadrícula.
+     * @return Número de píxels de alto que tiene cada celda.
+     */
     public int getHeightDisplacement() {
         return getHeight() / nRows;
     }
@@ -52,8 +63,8 @@ class RandomPathPanel extends JPanel {
     public Point determineOrigin() {
         int xAbstractCoordinates = nCols / 2;  
         int yAbstractCoordinates = nRows / 2; 
-        int xRealCoordinates = 0;
-        int yRealCoordinates = 0;
+        int xRealCoordinates = ZERO;
+        int yRealCoordinates = ZERO;
 
         for (int i = ZERO; i < xAbstractCoordinates; i++)
             xRealCoordinates += getSideDisplacement();
@@ -63,16 +74,27 @@ class RandomPathPanel extends JPanel {
         return new Point(xRealCoordinates, yRealCoordinates);
     }
 
+    /**
+     * Permite obtener el camino generado.
+     * @return Objeto PathModel que representa el camino generado.
+     */
     public PathModel getGeneratedPath() {
         return generatedPath;
     }
 
+    /**
+     * Reescritura del método paintComponent para dibujar la cuadrícula y el trazo.
+     * Establece el origen del camino en el origen de coordenadas.
+     * En un bloque try, dibuja: la cuadrícula (véase drawGrid), un punto que señala el origen (véase drawCenter) y el camino generado (véase la clase PathModel).
+     */
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        getGeneratedPath().setOrigin(determineOrigin());
         try {
             drawGrid(g);
             drawCenter(g);
-            getGeneratedPath().drawPath(g, getWidth(), getHeight());
+            getGeneratedPath().drawPath(g, getSideDisplacement(), getHeightDisplacement(), getWidth(), getHeight());
         } catch(Exception e) {
             e.printStackTrace();
         }

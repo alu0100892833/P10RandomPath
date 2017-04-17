@@ -13,6 +13,9 @@ import java.util.Random;
  */
 public class PathModel {
 
+	/**
+	 * Estas constantes determinan los movimientos posibles a realizar. Se trata de un valor entero de 0 a 3.
+	 */
     private static final int UP_MOVE = 0;
     private static final int DOWN_MOVE = 1;
     private static final int RIGHT_MOVE = 3;
@@ -22,47 +25,61 @@ public class PathModel {
     private Point origin;
     private ArrayList<Integer> generatedPath;
     private Color linesColor;
-    private double sideDistance, heightDistance;
 
+    /**
+     * Constructor por defecto que reserva espacio en memoria para el ArrayList de movimientos.
+     * Fija el color a pintar el trazo a negro, por defecto, pero puede modificarse.
+     */
     public PathModel() {
         this.generatedPath = new ArrayList<>();
         this.linesColor = Color.BLACK;
     }
 
+    /**
+     * Obtención de la coordenada x del origen del trazo.
+     * @return
+     */
     public double getOriginX() {
         return origin.getX();
     }
 
+    /**
+     * Obtención de la coordenada y del origen del trazo.
+     * @return
+     */
     public double getOriginY() {
         return origin.getY();
     }
 
+    /**
+     * Establece el origen del trazo. Es necesario llamar a este método antes de pintar el trazo (véase drawPath).
+     * @param origin Objeto Point que va a determinar el origen del trazo.
+     */
     public void setOrigin(Point origin) {
         this.origin = origin;
     }
 
+    /**
+     * Permite obtener el origen del trazo.
+     * @return Objeto Point.
+     */
     public Point getOrigin() {
         return origin;
     }
 
-    public double getSideDistance() {
-        return sideDistance;
-    }
-
-    public void setSideDistance(double sideDistance) {
-        this.sideDistance = sideDistance;
-    }
-
-    public double getHeightDistance() {
-        return heightDistance;
-    }
-
-    public void setHeightDistance(double heightDistance) {
-        this.heightDistance = heightDistance;
-    }
-
+    /**
+     * Permite obtener el camino generado.
+     * @return ArrayList con el camino generado, formado por símbolos UP_MOVE, DOWN_MOVE, RIGHT_MOVE y LEFT_MOVE (véase las constantes).
+     */
     public ArrayList<Integer> getGeneratedPath() {
         return generatedPath;
+    }
+    
+    /**
+     * Vacía el vector de movimientos para que el camino pueda empezar desde cero.
+     */
+    public void reset() {
+    	generatedPath.clear();
     }
 
     /**
@@ -71,7 +88,7 @@ public class PathModel {
      * @throws IndexOutOfBoundsException En el caso de que el movimiento no se reconozca.
      */
     private void addMove(int movement) throws IndexOutOfBoundsException {
-        if ((movement < UP_MOVE) || (movement > LEFT_MOVE))
+        if ((movement < UP_MOVE) || (movement > RIGHT_MOVE))
             throw new IndexOutOfBoundsException("El movimiento especificado no corresponde con ninguno posible.");
         this.generatedPath.add(movement);
     }
@@ -84,6 +101,10 @@ public class PathModel {
         this.linesColor = linesColor;
     }
 
+    /**
+     * Devuelve el color con el que se trazan las líneas.
+     * @return
+     */
     public Color getLinesColor() {
         return linesColor;
     }
@@ -115,11 +136,15 @@ public class PathModel {
 
     /**
      * Este método dibuja el camino sobre una ventana gráfica.
+     * Recorre el ArrayList de movimientos y dibuja una línea hacia una dirección determinada en función del movimiento dado. Desplaza el origen hacia el final del trazo en cada iteración.
+     * El proceso termina cuando se ha alcanzado el límite de la cuadrícula (véanse los parámetros) o cuando se ha recorrido todo el vector de movimientos.
      * @param g
-     * @param rightLimit
-     * @param bottomLimit
+     * @param sideDisplacement Número de píxeles de un trazo horizontal.
+     * @param heightDisplacement Número de píxeles de un trazo vertical.
+     * @param rightLimit Anchura de la cuadrícula.
+     * @param bottomLimit Altura de la cuadrícula.
      */
-    public void drawPath(Graphics g, int rightLimit, int bottomLimit) throws Exception {
+    public void drawPath(Graphics g, int sideDisplacement, int heightDisplacement, int rightLimit, int bottomLimit) throws Exception {
         g.setColor(getLinesColor());
         Point saveOrigin = getOrigin();
         Point nextPoint;
@@ -129,22 +154,22 @@ public class PathModel {
                 && (iterator < getGeneratedPath().size())) {
             switch (getGeneratedPath().get(iterator)) {
                 case UP_MOVE:
-                    nextPoint = new Point((int) getOriginX(), (int) (getOriginY() - getHeightDistance()));
+                    nextPoint = new Point((int) getOriginX(), (int) (getOriginY() - heightDisplacement));
                     g.drawLine((int) getOriginX(), (int) getOriginY(), (int) nextPoint.getX(), (int) nextPoint.getY());
                     setOrigin(nextPoint);
                     break;
                 case DOWN_MOVE:
-                    nextPoint = new Point((int) getOriginX(), (int) (getOriginY() + getHeightDistance()));
+                    nextPoint = new Point((int) getOriginX(), (int) (getOriginY() + heightDisplacement));
                     g.drawLine((int) getOriginX(), (int) getOriginY(), (int) nextPoint.getX(), (int) nextPoint.getY());
                     setOrigin(nextPoint);
                     break;
                 case LEFT_MOVE:
-                    nextPoint = new Point((int) (getOriginX() - getSideDistance()), (int) getOriginY());
+                    nextPoint = new Point((int) (getOriginX() - sideDisplacement), (int) getOriginY());
                     g.drawLine((int) getOriginX(), (int) getOriginY(), (int) nextPoint.getX(), (int) nextPoint.getY());
                     setOrigin(nextPoint);
                     break;
                 case RIGHT_MOVE:
-                    nextPoint = new Point((int) (getOriginX() + getSideDistance()), (int) getOriginY());
+                    nextPoint = new Point((int) (getOriginX() + sideDisplacement), (int) getOriginY());
                     g.drawLine((int) getOriginX(), (int) getOriginY(), (int) nextPoint.getX(), (int) nextPoint.getY());
                     setOrigin(nextPoint);
                     break;
